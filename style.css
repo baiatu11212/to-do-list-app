@@ -167,6 +167,6 @@ li.new {
 }
 .completed {
   text-decoration: line-through;
-  color: #666;
+  color: #666
   background-color: #d4edda;
   transition: 0.3s ease;
