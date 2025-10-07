@@ -193,5 +193,31 @@ li.new {
 
 /* 🔹 Când e completat, bifa apare cu o animație mică */
 .completed::before {
+  .completed {
+  position: relative;
+  text-decoration: line-through;
+  color: #666;
+  background-color: #d4edda;
+  transition: 0.3s ease;
+}
+
+/* 🔹 Bifa animată cu efect de rotație */
+.completed::before {
+  content: "✔";
+  position: absolute;
+  left: -25px;
+  top: 50%;
+  transform: translateY(-50%) scale(0) rotate(-90deg);
+  color: #28a745;
+  font-weight: bold;
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+/* 🔹 Când taskul e completat, bifa apare animat */
+.completed.completed::before {
+  transform: translateY(-50%) scale(1) rotate(0deg);
+  opacity: 1;
+}
   transform: translateY(-50%) scale(1);
 }
