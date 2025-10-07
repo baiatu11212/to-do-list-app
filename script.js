@@ -57,6 +57,7 @@ setTimeout(() => li.classList.remove("new"), 600);
   li.addEventListener("click", () => {
     li.classList.toggle("completed");
     updateStorage();
+    updateProgress();
   });
 
   // ❌ Buton de ștergere
