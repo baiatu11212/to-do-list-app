@@ -19,6 +19,8 @@ addBtn.addEventListener("click", () => {
 function addTask(taskText, completed = false) {
   const li = document.createElement("li");
   li.textContent = taskText;
+  li.classList.add("new");
+setTimeout(() => li.classList.remove("new"), 600);
 
   if (completed) li.classList.add("completed");
 
