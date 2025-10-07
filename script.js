@@ -1,45 +1,68 @@
-const taskInput = document.getElementById("task-input");
 const addBtn = document.getElementById("add-btn");
+const taskInput = document.getElementById("task-input");
 const taskList = document.getElementById("task-list");
 
-// Când pagina se încarcă, încărcăm task-urile salvate
+// 🔁 Încarcă task-urile salvate din localStorage
 document.addEventListener("DOMContentLoaded", loadTasks);
 
-addBtn.addEventListener("click", addTask);
-taskList.addEventListener("click", handleTaskAction);
-
-function addTask() {
+// ➕ Adaugă un task nou
+addBtn.addEventListener("click", () => {
   const taskText = taskInput.value.trim();
-  if (!taskText) return; // dacă e gol, nu face nimic
+  if (taskText === "") return;
 
+  addTask(taskText);
+  saveTask(taskText);
+  taskInput.value = "";
+});
+
+// 🧩 Funcție pentru a adăuga un task în listă
+function addTask(taskText, completed = false) {
   const li = document.createElement("li");
-  li.innerHTML = `
-    <span>${taskText}</span>
-    <div>
-      <button class="complete">✔</button>
-      <button class="delete">✖</button>
-    </div>
-  `;
+  li.textContent = taskText;
 
+  if (completed) li.classList.add("completed");
+
+  // ✅ Mark as done
+  li.addEventListener("click", () => {
+    li.classList.toggle("completed");
+    updateStorage();
+  });
+
+  // ❌ Buton de ștergere
+  const delBtn = document.createElement("button");
+  delBtn.textContent = "✕";
+  delBtn.classList.add("delete-btn");
+  delBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    li.remove();
+    updateStorage();
+  });
+
+  li.appendChild(delBtn);
   taskList.appendChild(li);
-  saveTasks();
-  taskInput.value = ""; // curățăm inputul
 }
 
-function handleTaskAction(e) {
-  if (e.target.classList.contains("delete")) {
-    e.target.parentElement.parentElement.remove(); // șterge task-ul
-  } else if (e.target.classList.contains("complete")) {
-    e.target.parentElement.parentElement.classList.toggle("completed"); // marchează completat
-  }
-  saveTasks();
+// 💾 Salvează un task nou în localStorage
+function saveTask(taskText) {
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasks.push({ text: taskText, completed: false });
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-function saveTasks() {
-  localStorage.setItem("tasks", taskList.innerHTML);
+// 🔄 Actualizează starea (după ștergere / bifare)
+function updateStorage() {
+  const tasks = [];
+  document.querySelectorAll("#task-list li").forEach((li) => {
+    tasks.push({
+      text: li.childNodes[0].textContent,
+      completed: li.classList.contains("completed"),
+    });
+  });
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
+// 📦 Încarcă toate task-urile salvate
 function loadTasks() {
-  const data = localStorage.getItem("tasks");
-  if (data) taskList.innerHTML = data;
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasks.forEach((t) => addTask(t.text, t.completed));
 }
