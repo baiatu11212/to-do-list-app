@@ -140,3 +140,27 @@ li:hover {
 li.new {
   animation: glow 0.6s ease-out, fadeIn 0.4s ease;
 }
+.progress-container {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+#progress-text {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.progress-bar {
+  background: #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 10px;
+}
+
+#progress-fill {
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  height: 100%;
+  width: 0%;
+  transition: width 0.4s ease;
+}

@@ -11,6 +11,35 @@ addBtn.addEventListener("click", () => {
   if (taskText === "") return;
 
   addTask(taskText);
+  function addTask(taskText, completed = false) {
+  const li = document.createElement("li");
+  li.textContent = taskText;
+
+  if (completed) li.classList.add("completed");
+
+  // ✅ Când bifezi un task
+  li.addEventListener("click", () => {
+    li.classList.toggle("completed");
+    updateStorage();
+    updateProgress(); // 🔹 actualizează bara de progres
+  });
+
+  // ❌ Când ștergi un task
+  const delBtn = document.createElement("button");
+  delBtn.textContent = "✕";
+  delBtn.classList.add("delete-btn");
+  delBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    li.remove();
+    updateStorage();
+    updateProgress(); // 🔹 actualizează bara de progres
+  });
+
+  li.appendChild(delBtn);
+  taskList.appendChild(li);
+
+  updateProgress(); // 🔹 actualizează și când adaugi un task nou
+}
   saveTask(taskText);
   taskInput.value = "";
 });
@@ -67,4 +96,18 @@ function updateStorage() {
 function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   tasks.forEach((t) => addTask(t.text, t.completed));
+}
+function updateProgress() {
+  const tasks = document.querySelectorAll("#task-list li");
+  const completed = document.querySelectorAll("#task-list li.completed");
+
+  const total = tasks.length;
+  const done = completed.length;
+
+  const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+
+  document.getElementById("progress-text").textContent = 
+    `${done} din ${total} taskuri completate (${percent}%)`;
+
+  document.getElementById("progress-fill").style.width = `${percent}%`;
 }
