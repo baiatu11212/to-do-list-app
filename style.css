@@ -100,6 +100,7 @@ li:hover {
 .completed {
   text-decoration: line-through;
   color: gray;
+  opacity: 0.6;
 }
 @keyframes fadeIn {
   from {
@@ -164,3 +165,8 @@ li.new {
   width: 0%;
   transition: width 0.4s ease;
 }
+.completed {
+  text-decoration: line-through;
+  color: #666;
+  background-color: #d4edda;
+  transition: 0.3s ease;
